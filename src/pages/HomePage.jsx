@@ -6,23 +6,29 @@ import {
   useMovieDataQuery,
 } from "../services/movie/get-data-movie";
 import { useMovieDataQueryDetail } from "../services/movie/get-data-movie-detail";
+import { Navbar } from "../assets/components/Navbar";
+// import { useParams } from "react-router-dom";
 
 export const HomePage = () => {
   // const [movieData, setMovieData] = useState([]);
   // const [page, setPage] = useState('')
   const [pageNow, setPageNow] = useState(1);
+  const [Data, setData] = useState([])
+  // const id = useParams()
 
   // const {data: fetchUser, refetch: loadUlang} = useMovieDataQuery(pageNow);
-  const { data: paijoSalto } = useMovieDataQuery({
+  const { data: paijoSalto, isSuccess, status } = useMovieDataQuery({
     language: "en-US",
     page: pageNow,
   });
-  console.log(paijoSalto, "data dinamis");
+  
 
   const { data: detailPaijo } = useMovieDataQueryDetail({
-    id: "980489",
+    id: '1945',
   });
-  console.log(detailPaijo, "data detail dinamis");
+  // console.log(detailPaijo, "data detail dinamis");
+
+  // console.log('Status : ', status);
   // CARA 2
   // const options = {
   //   method: "GET",
@@ -57,6 +63,10 @@ export const HomePage = () => {
   // useEffect(() => {
   //   getDataMovie();
   // }, []);
+  // if(isSuccess){
+    // setData(paijoSalto.results)
+  //   console.log(paijoSalto, "data dinamis");
+  // }
 
   return (
     // <div className="bg-[#040100] h-screen text-white flex flex-col gap-10">
@@ -80,9 +90,10 @@ export const HomePage = () => {
     // </div>
 
     <div className="relative">
+      <Navbar/>
       <div className="flex gap-3 justify-center py-5">
         <button
-          className="bg-red-600 w-20 text-white rounded-xl"
+          className={`${pageNow === 1 ? 'bg-gray-500' : 'bg-red-600'} w-20 text-white rounded-xl`}
           onClick={() => {
             pageNow !== 1 ? setPageNow(pageNow - 1) : setPageNow(pageNow);
           }}
@@ -91,7 +102,7 @@ export const HomePage = () => {
         </button>
         <h1 className="font-semibold">{pageNow}</h1>
         <button
-          className="bg-red-600 w-20 text-white rounded-xl"
+          className={`${pageNow === paijoSalto?.total_pages ? 'bg-gray-500' : 'bg-red-600'} w-20 text-white rounded-xl`}
           onClick={() => {
             setPageNow(pageNow + 1);
           }}
